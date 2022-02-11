@@ -1,0 +1,15 @@
+html, body {
+  background: #e9ecef;
+}
+
+.cursor-grab {
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+.tasks {
+  min-height: 450px;
+}
+.hiddenid {
+  visibility: hidden;
+}
