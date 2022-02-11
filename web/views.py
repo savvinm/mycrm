@@ -132,7 +132,8 @@ def projectsForExecutor(login):
     for task in tasks:
         project = task.project
         if project not in projects:
-            projects.append(project)
+            if(project.status != "done"):
+                projects.append(project)
     return projects
 def projects(request):
     try:
@@ -155,7 +156,7 @@ def projects(request):
                         if(i+1 == len(cards)):
                                 col.append(cards[i])
                                 rows.append(col)
-                return render(request, "projects.html", {"rows":rows})
+                return render(request, "projects.html", {"rows":rows, "pm": True})
             if(request.session['role'] == "executor"):
                 cards = projectsForExecutor(login)
                 rows = []
@@ -169,7 +170,7 @@ def projects(request):
                         if(i+1 == len(cards)):
                                 col.append(cards[i])
                                 rows.append(col)
-                return render(request, "projects.html", {"rows":rows})
+                return render(request, "projects.html", {"rows":rows, "pm": False})
             else:
                 raise Http404()
     except KeyError:
@@ -285,5 +286,13 @@ def getStatistic():
     arr.append(len(list(Request.objects.filter(status="created"))))
     return arr
 def statistic(request):
-    arr = getStatistic()
-    return render(request, "statistic.html", {"arr": arr})
+    try:
+        login = request.session['login']
+        if(login):
+            if(request.session['role'] == "projectmanager"):
+                arr = getStatistic()
+                return render(request, "statistic.html", {"arr": arr})
+            else:
+                raise Http404()
+    except KeyError:
+        raise Http404()
