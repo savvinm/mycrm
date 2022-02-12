@@ -27,7 +27,6 @@ urlpatterns = [
     path('projects', views.projects),
     path('project/<int:id>', views.project),
     path('card/<int:cardId>', views.card),
-    path('card/<int:cardId>', views.card),
     path('card/rej/<int:id>', views.reject),
     path('', views.index),
 ]
